@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/labo3_sensor.dir/sensor.c.o -o labo3_sensor 
