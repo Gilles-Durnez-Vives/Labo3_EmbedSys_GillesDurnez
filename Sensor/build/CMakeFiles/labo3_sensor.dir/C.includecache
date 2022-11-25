@@ -7,8 +7,6 @@
 #IncludeRegexTransform: 
 
 /home/pi/School/Embed/Labo/Labo3/Labo3_EmbedSys_GillesDurnez/Sensor/sensor.c
-stdio.h
--
 unistd.h
 -
 fcntl.h
@@ -17,4 +15,12 @@ sys/ioctl.h
 -
 linux/i2c-dev.h
 -
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+MQTTClient.h
+/home/pi/School/Embed/Labo/Labo3/Labo3_EmbedSys_GillesDurnez/Sensor/MQTTClient.h
 

@@ -1,0 +1,1 @@
+cc sensor.c -lpaho-mqtt3cs -I ../paho.mqtt.c/src -L ../paho.mqtt.c/build/Output -oLabo3_sensor
