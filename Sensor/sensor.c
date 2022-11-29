@@ -63,7 +63,7 @@ int main()
 	}
 	else
 	{
-		sprintf(buf_I2CData,"%8d\n", buffer[0]);
+		sprintf(buf_I2CData,"%d\n", buffer[0]);
 	}
 
     conn_opts.keepAliveInterval = 20;

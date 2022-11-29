@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <mysql.h>
 #include "MQTTClient.h"
 
 #define ADDRESS     "tcp://192.168.137.1:1883"
@@ -22,9 +23,42 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 {
     printf("Message arrived\n");
     printf("     topic: %s\n", topicName);
-    printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
+    printf("   Temp: %.*s\n", message->payloadlen, (char*)message->payload);
+
+    MYSQL *con = mysql_init(NULL);
+    if (con == NULL)
+    {
+        fprintf(stderr, "%s\n", mysql_error(con));
+        exit(1);
+    }
+
+    if (mysql_real_connect(con, "localhost", "labo3GillesDurnez", "labo2GillesDurnezPW", "LABO3GillesD", 0, NULL, 0) == NULL)
+    {
+        fprintf(stderr, "%s\n", mysql_error(con));
+        mysql_close(con);
+        exit(1);
+    }
+
+    char received[20];
+    int temp;
+    sprintf(received,"%.*s", message->payloadlen, (char*)message->payload);
+    // Make int from var so its a db doesn't include enter
+    temp = atoi(received);
+
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
+
+    char queryString [128];
+    sprintf(queryString,"INSERT INTO templogger (temp) VALUES('%d');",temp);
+
+    if (mysql_query(con, queryString))
+    {
+        fprintf(stderr, "%s\n", mysql_error(con));
+        mysql_close(con);
+        exit(1);
+    }
+
+    printf("Data added to DB");
     return 1;
 }
 
@@ -38,6 +72,7 @@ int main(int argc, char* argv[])
 {
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+    
     int rc;
 
     if ((rc = MQTTClient_create(&client, ADDRESS, CLIENTID,
