@@ -1,0 +1,14 @@
+[Unit]
+Description=Labo 3 EMBED Temp server
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=idle
+Restart=always
+RestartSec=5
+User=pi
+ExecStart=/home/pi/School/Embed/Labo/Labo3/Labo3_EmbedSys_GillesDurnez/Server/Labo3_server
+
+[Install]
+WantedBy=multi-user.target
